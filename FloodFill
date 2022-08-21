@@ -1,0 +1,48 @@
+//BFS TC: m*n SC: m*n
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int [][] dirs=new int[][]{{-1,0},{0,-1},{1,0},{0,1}};
+        if(image==null || image.length==0) return image;
+        int m=image.length; int n=image[0].length;
+        if(image[sr][sc]==color) return image;
+        Queue<Integer> q=new LinkedList<>();
+        q.add(sr);q.add(sc);
+        int OriginalColor=image[sr][sc];
+        image[sr][sc]=color;
+        while(!q.isEmpty()){
+            int r=q.poll();
+            int c=q.poll();
+            for(int [] dir:dirs){
+                int nr=r+dir[0];
+                int nc=c+dir[1];
+                if(nr>=0 && nr<m && nc>=0 && nc<n && image[nr][nc]== OriginalColor ){
+                    q.add(nr);q.add(nc);
+                    image[nr][nc]=color;
+                }
+            }
+        } return image;
+    }
+}
+//DFS TC:m*n SC: m*n
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int [][] dirs=new int[][]{{-1,0},{0,-1},{1,0},{0,1}};
+        if(image==null || image.length==0) return image;
+        int m=image.length; int n=image[0].length;
+        if(image[sr][sc]==color) return image;
+        int OriginalColor = image[sr][sc];
+        dfs(image,sr,sc,color, OriginalColor,dirs);
+        return image;
+    }
+    public void dfs(int[][] image, int sr, int sc, int color, int OriginalColor, int[][] dirs){
+        //base conditions
+        if(sr<0 || sr==image.length || sc<0 || sc==image[0].length || image[sr][sc]!=OriginalColor) return;
+        //logic
+        image[sr][sc]=color;
+        for(int[] dir:dirs){
+            int r=sr+dir[0];
+            int c=sc+dir[1];
+            dfs(image,r,c,color,OriginalColor,dirs);
+        }
+    }
+}
